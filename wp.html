@@ -1,0 +1,224 @@
+<html>
+<link rel="stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+ <link rel="stylesheet" type="text/css" href="index.css" />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.2.32.min.js"></script>
+ <script src="main.js"></script>
+<script type="text/javascript" src="lib/axios/dist/axios.standalone.js"></script>
+<script type="text/javascript" src="lib/CryptoJS/rollups/hmac-sha256.js"></script>
+<script type="text/javascript" src="lib/CryptoJS/rollups/sha256.js"></script>
+<script type="text/javascript" src="lib/CryptoJS/components/hmac.js"></script>
+<script type="text/javascript" src="lib/CryptoJS/components/enc-base64.js"></script>
+<script type="text/javascript" src="lib/url-template/url-template.js"></script>
+<script type="text/javascript" src="lib/apiGatewayCore/sigV4Client.js"></script>
+<script type="text/javascript" src="lib/apiGatewayCore/apiGatewayClient.js"></script>
+<script type="text/javascript" src="lib/apiGatewayCore/simpleHttpClient.js"></script>
+<script type="text/javascript" src="lib/apiGatewayCore/utils.js"></script>
+<script type="text/javascript" src="apigClient.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+</script>
+
+<style>
+	.searchbox{
+		width:700px;
+		height:100px;
+		margin-left: 30%;
+		margin-top: 10%;
+		padding-top: 30px;
+		padding-left: 50px;
+		background-color:darkmagenta;
+	}
+	
+	.input-icons i { 
+            position: absolute; 
+
+        } 
+    .upload i { 
+            position: absolute; 
+
+        } 
+	.ip{
+		width:400px;
+	}
+	.input-icons { 
+            width: 100%; 
+            margin-bottom: 10px; 
+
+        } 
+ 	.input-field { 
+            padding: 10px; 
+            text-align: center; 
+        } 
+    .titlebox{
+ 		 width:100%;
+		  height: 10%;
+		  background-color:purple;
+		  color:white;
+		  vertical-align: top;
+		  horizontal-align:center;
+}		
+	.italic {
+	  font-family: "Georgia", Times, serif;
+	  font-style: italic;
+	  font-size: 50px;
+	}
+	.fontall{
+	  font-family: "Georgia", Times, serif;
+	  font-style: italic;
+	  color:white;
+	  font-size: 20px;
+	}
+	.upload{
+		width:700px;
+		height:100px;
+		margin-left: 30%;
+		margin-top: 5%;
+		padding-top: 30px;
+		padding-left: 50px;
+		background-color:darkmagenta;
+	}
+	.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.btnf {
+  border: 2px solid white;
+  color: white;
+  background-color: green;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
+
+}
+
+.upload-btn-wrapper input[type=file]
+ { font-size: 100px; position: absolute;
+left: 0; top: 0; opacity: 0; } 
+</style>
+ <body style="background-color:lightgrey;"> <div class="titlebox">
+  <h1 class="italic">Photo Album</h1> </div> 
+  <div class="searchbox">
+   <form class="form-inline md-form mr-auto mb-4" action="#0" id="search"> 
+   	<div class="input-icons"> 
+   	 <i class="fa fa-search fa-2x"></i> 
+   	<input class="form-control mr-sm-2" id="query" type="text" aria-label="Search" size="50"> 
+	 <button class="btn btn-success" type="submit" id="search1">Search</button> 
+	 <i class="fa fa-microphone fa-2x"></i> 
+	 <button class="btn btn-danger" type="submit">&nbsp&nbsp&nbsp&nbsp Search</button>
+	<button type="button" class="btn kc record" id="record_q1" onclick="AudioStream.startRecording(this.id)">Record</button>
+	<button type="button" class="btn kc stop" id="stop_q1" onclick="AudioStream.stopRecording(this.id)">Stop</button>
+	  </div>
+	 </form>
+	 </div> 
+	 <div class="upload" id="upload">
+	 <div class="upload-btn-wrapper"> 
+	 	<form action="/action_page.php">
+ 			 Select image to upload:
+    		<input type="file" name="fileToUpload" id="fileToUpload">
+    		<input type="submit" value="Upload Image" name="submit">
+		</form>
+	</div>
+	</div>
+	<div id="output1">
+		<form onsubmit="upload(fileToUpload)">
+ 			 Select image to upload:
+    		<input type="file" name="fileToUpload" id="fileToUpload">
+    		<input type="submit" value="Upload Image" name="submit">
+		</form>
+	</div>
+	<div id="output">
+
+	</div>
+
+</body>
+</html>
+<script type="text/javascript">
+var apigClient = apigClientFactory.newClient();
+</script>
+
+<script type="text/javascript">
+var outputArea = $("#output");
+$("#search").on("submit", function(e) {
+  e.preventDefault();
+  
+ var message= $("#query").val();
+ 
+  
+  var params = {
+};
+
+var obj = {"message":message}
+var body = JSON.stringify(obj);
+var additionalParams = {
+    headers: {
+       
+    },
+    queryParams: {
+       
+    }
+};
+apigClient.rootPost(params,body,additionalParams).then(function(result){
+  var response=result.data.body.message
+   setTimeout(function() {
+    outputArea.append(`
+      <div class='outputimages'>
+      	<p>IMAGES:</p>
+      	${response}
+      </div>
+    `);
+  }, 250);
+});
+
+
+
+  
+});
+function upload(filereceived)
+// $("#upload").on("submit", function(e) 
+{
+  var uploadfile=filereceived.files[0];
+  // if(uploadfile)
+  // {
+  // 	const reader=new FileReader
+  // }
+  var filename = uploadfile.name;
+  alert(filename);
+  var params = {};
+  var obj = {"filename":filename,"file":filereceived}
+  console.log(obj);
+var body = JSON.stringify(obj);
+alert(body);
+alert(body.filename);
+var additionalParams = {
+    headers: {
+       
+    },
+    queryParams: {
+       
+    }
+};
+alert("uploading......")
+apigClient.uploadPut(params,body,additionalParams).then(function(result){
+ alert("got back")
+  var response=result.data.body.message
+});
+};
+
+</script>
+<script>
+	var wRegion = "us-east-1";
+    var poolid = "us-east-1:XXXXXXXXX";
+    var s3bucketName = "voicecontrolledsearchb1";
+    var audioPath = "/audio-files";
+    AudioStream = new AudioStream(wRegion,poolid,s3bucketName+audioPath);
+    AudioStream.audioStreamInitialize();
+</script>
